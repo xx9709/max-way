@@ -8,10 +8,20 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class MinImage(models.Model):
+    name = models.CharField(max_length=50, blank=False, null=False)
+    min_image = models.FileField(upload_to='imoges/', blank=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=False)
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False)
     price = models.IntegerField(blank=False, null=False)
     image = models.ImageField(upload_to='imoges/', blank=False, null=False)
+    min_image = models.ForeignKey(MinImage, blank=True, null=True, on_delete=models.SET_NULL)
+    is_hot = models.BooleanField(default=False)
     description = models.TextField(blank=False, null=False)
     category = models.ForeignKey(Category, blank=False, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True, null=False)
@@ -36,3 +46,5 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.first_name
+
+
